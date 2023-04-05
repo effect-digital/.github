@@ -1,0 +1,31 @@
+name: Teamwork synchronisation
+
+on:
+  workflow_call:
+    inputs:
+      BOARD_COLUMN_OPENED:
+        default: Peer Review
+        type: string
+      BOARD_COLUMN_MERGED:
+        default: For Deployment
+        type: string
+      BOARD_COLUMN_CLOSED:
+        default: Done
+        type: string
+
+jobs:
+  teamwork-sync:
+    runs-on: ubuntu-latest
+    name: Teamwork Sync
+    steps:
+      - uses: teamwork/github-sync@master
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TEAMWORK_URI: 'https://teamwork.effectdigital.com'
+          TEAMWORK_API_TOKEN: ${{ secrets.TEAMWORK_API_TOKEN }}
+          AUTOMATIC_TAGGING: true
+          BOARD_COLUMN_OPENED: ${{ inputs.BOARD_COLUMN_OPENED }}
+          BOARD_COLUMN_MERGED: ${{ inputs.BOARD_COLUMN_MERGED }}
+          BOARD_COLUMN_CLOSED: ${{ inputs.BOARD_COLUMN_CLOSED }}
+        env:
+          IGNORE_PROJECT_IDS: ''
