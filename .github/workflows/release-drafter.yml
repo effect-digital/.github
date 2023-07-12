@@ -8,9 +8,8 @@ permissions:
 
 jobs:
   create-draft-release:
-
-    name: Create draft release
     runs-on: ubuntu-latest
+    name: Create draft release
     permissions:
       contents: write
       pull-requests: write
