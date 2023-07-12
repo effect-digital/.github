@@ -1,0 +1,73 @@
+name: Update CHANGELOG
+
+on:
+  workflow_call:
+    inputs:
+      PAT: # Personal Access Token with repo scope
+        required: true
+        type: string
+
+jobs:
+  changelog:
+    name: Update CHANGELOG
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          # Fetch entire history of repository to ensure release date can be extracted from commit of the given tag.
+          fetch-depth: 0
+          # Checkout target branch of this release. Ensures that the CHANGELOG is not out of date.
+          ref: ${{ github.event.release.target_commitish }}
+
+      - name: Extract release date from git tag
+        id: release_date
+        run: |
+          # Get UNIX timestamp from git-tag
+          TIMESTAMP_OF_RELEASE_COMMIT=$(git log -1 --date=unix --format=%ad '${{ github.event.release.tag_name }}');
+          
+          # Convert timestamp to UTC date in Y-m-d format
+          FORMATTED_DATE=$(date -u -d @$TIMESTAMP_OF_RELEASE_COMMIT +%Y-%m-%d)
+          
+          # Make date available to other steps
+          echo "date=$(echo $FORMATTED_DATE)" >> $GITHUB_OUTPUT;
+
+      - name: Update Changelog
+        uses: stefanzweifel/changelog-updater-action@v1
+        with:
+          # Pass extracted release date, release notes and version to the Action.
+          release-date: ${{ steps.release_date.outputs.date }}
+          release-notes: ${{ github.event.release.body }}
+          latest-version: ${{ github.event.release.tag_name }}
+          compare-url-target-revision: ${{ github.event.release.target_commitish }}
+
+      # Create a Pull Request with the updated CHANGELOG.
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+            title: "Release ${{ github.event.release.tag_name }} - :memo: Update CHANGELOG"
+            commit-message: Update CHANGELOG (${{ github.event.release.tag_name }})
+            branch: docs/${{ github.event.release.tag_name }}-changelog
+            body: |
+                This Pull Request was automatically created by the [create-pull-request](https://github.com/peter-evans/create-pull-request) GitHub action. 🚀
+            labels: changelog
+            delete-branch: true
+            add-paths: CHANGELOG.md
+
+      - name: Approve the PR
+        if: steps.cpr.outputs.pull-request-operation == 'created' && inputs.PAT != ''
+        run: gh pr review --approve "${{ steps.cpr.outputs.pull-request-number }}"
+        env:
+          GH_TOKEN: ${{ inputs.PAT }}
+
+      - name: Merge the PR back into main/default branch
+        if: steps.cpr.outputs.pull-request-operation == 'created' && inputs.PAT != ''
+        run: gh pr merge docs/${{ github.event.release.tag_name }}-changelog --squash --auto --delete-branch
+        env:
+          GH_TOKEN: ${{ inputs.PAT }}
