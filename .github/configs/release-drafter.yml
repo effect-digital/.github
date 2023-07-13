@@ -39,3 +39,7 @@ autolabeler:
   - label: 'feature'
     branch:
       - '/feature\/.+/'
+
+# Exclude any PR's with the following labels
+exclude-labels:
+  - 'changelog'
