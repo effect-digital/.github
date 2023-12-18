@@ -10,11 +10,12 @@ Please add a link to the specific task on Teamwork. Adding this will link the ta
 
 Please delete options that are not relevant.
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Bug Fix (non-breaking change which fixes an issue)
+- [ ] Minor Update (small non-breaking change to text content or style which doesn't qualify as new functionality)
+- [ ] New Feature (non-breaking change which adds functionality)
+- [ ] Breaking Change (fix or feature that would cause existing functionality to not work as expected)
 - [ ] Scheduled Maintenance (monthly update of third party packages and/or CMS version)
-- [ ] This change requires a documentation update
+- [ ] Documentation Update (a documentation amendment was required in addition to functionality)
 
 ### How Has This Been Tested?
 
