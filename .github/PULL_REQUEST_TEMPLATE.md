@@ -6,6 +6,10 @@ Please include a summary of the changes and the related issue. Please also inclu
 
 Please add a link to the specific task on Teamwork. Adding this will link the task to the pull request, and update the status once the PR is created, and subsequently reviewed/merged on Teamwork.
 
+### Related Pull Requests
+
+Please list any other pull requests that should be reviewed in conjunction with this one.
+
 ### Type of change
 
 Please delete options that are not relevant.
