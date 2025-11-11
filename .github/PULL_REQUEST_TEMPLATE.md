@@ -4,7 +4,7 @@ Please include a summary of the changes and the related issue. Please also inclu
 
 ### Issue ticket number and link
 
-Please add a link to the specific task on Teamwork. Adding this will link the task to the pull request, and update the status once the PR is created, and subsequently reviewed/merged on Teamwork.
+Please add a link to the JIRA Ticket.
 
 ### Related Pull Requests
 
