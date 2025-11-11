@@ -35,4 +35,3 @@ Please describe the tests that you ran to verify your changes. Provide instructi
 - [ ] I have commented my code, particularly in hard-to-understand areas
 - [ ] If it is a core feature, I have added thorough tests.
 - [ ] I have made corresponding changes to the documentation (where applicable)
-- [ ] Will this be part of a release? If yes, please write one phrase about this update.
